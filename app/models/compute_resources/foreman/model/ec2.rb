@@ -52,9 +52,17 @@ module Foreman::Model
 
     def create_vm(args = { })
       args = vm_instance_defaults.merge(args.to_h.symbolize_keys).deep_symbolize_keys
+      # Merge AWS EC2 tags
+      new_tags = {}
       if (name = args[:name])
-        args[:tags] = {:Name => name}
+        new_tags = {:Name => name}
       end
+      args[:tags]&.each_line do |line|
+        key, value = line.strip.split(/=/)
+        # TODO validation against AWS rules
+        new_tags[key] = value
+      end
+      args[:tags] = new_tags
       if (image_id = args[:image_id])
         image = images.find_by_uuid(image_id.to_s)
         iam_hash = image.iam_role.present? ? {:iam_instance_profile_name => image.iam_role} : {}

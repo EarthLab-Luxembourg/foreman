@@ -31,3 +31,5 @@ images = possible_images(compute_resource, arch, os)
 
   <%= selectable_f f, :managed_ip, {_("Public")=>'public', _("Private")=>'private'}, {}, { :label => _("Managed IP"), :label_size => "col-md-2" } %>
 </div>
+
+<%= textarea_f f, :tags, :class => "col-md-8", :rows=> '3', :disabled => !new_vm, :label => _("Tags (key=val per line)") %>
