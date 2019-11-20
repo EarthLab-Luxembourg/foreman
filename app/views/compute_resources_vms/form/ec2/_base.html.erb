@@ -32,4 +32,14 @@ images = possible_images(compute_resource, arch, os)
   <%= selectable_f f, :managed_ip, {_("Public")=>'public', _("Private")=>'private'}, {}, { :label => _("Managed IP"), :label_size => "col-md-2" } %>
 </div>
 
-<%= textarea_f f, :tags, :class => "col-md-8", :rows=> '3', :disabled => !new_vm, :label => _("Tags (key=val per line)") %>
+<div id="ec2_tags">
+  <table>
+    <!-- with cols name, value, action -->
+    <% tags.each do |key, val| %>
+      <%= f.fields_for :tags, OpenStruct.new(name: key, value: val) do |fields| %>
+        <%= render "compute_resources/ec2_tag", :f => builder %>
+      <% end %>
+    <% end %>
+    <%= link_to_add_fields('+ ' + _("Add tag"), f, :tags, "compute_resources/ec2_tag", { :target => '#ec2_tags' }) %>
+  </table>
+</div>

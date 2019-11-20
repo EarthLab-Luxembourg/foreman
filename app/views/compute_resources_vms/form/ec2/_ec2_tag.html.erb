@@ -1,0 +1,11 @@
+<tr>
+  <td>
+    <%= f.text_field(:name, ... %>
+  </td>
+  <td>
+    <%= f.text_field(:value, ... %>
+  </td>
+  <td>
+    <%= link_to_remove_fields(_('Remove'), f) if f.object.new_record? %>
+  </td>
+</tr>
