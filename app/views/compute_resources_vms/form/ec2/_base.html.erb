@@ -1,6 +1,6 @@
 <%= select_f f, :flavor_id, compute_resource.flavors, :id, :to_label, {}, :label => _('Flavor'), :label_size => "col-md-2" %>
 <%
-arch ||= nil ; os ||= nil ; tags ||= {}
+arch ||= nil ; os ||= nil ; tags = {}
 images = possible_images(compute_resource, arch, os)
 %>
 
