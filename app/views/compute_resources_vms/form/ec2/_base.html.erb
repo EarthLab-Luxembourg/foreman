@@ -32,14 +32,18 @@ images = possible_images(compute_resource, arch, os)
   <%= selectable_f f, :managed_ip, {_("Public")=>'public', _("Private")=>'private'}, {}, { :label => _("Managed IP"), :label_size => "col-md-2" } %>
 </div>
 
-<div id="ec2_tags">
-  <table>
-    <!-- with cols name, value, action -->
+<table id="ec2_tags">
+  <thead>
+    <th><%= _('Name') %></th>
+    <th><%= _('Value') %></th>
+    <th><%= _('Actions') %></th>
+  </thead>
+  <tbody>
     <% tags.each do |key, val| %>
       <%= f.fields_for :tags, OpenStruct.new(name: key, value: val) do |fields| %>
-        <%= render "compute_resources/ec2_tag", :f => builder %>
+        <%= render "compute_resources/ec2_tag", f: builder, editable: f.object.new_record? %>
       <% end %>
     <% end %>
-    <%= link_to_add_fields('+ ' + _("Add tag"), f, :tags, "compute_resources/ec2_tag", { :target => '#ec2_tags' }) %>
-  </table>
-</div>
+  </tbody>
+</table>
+<%= link_to_add_fields('+ ' + _("Add tag"), f, :tags, "compute_resources/ec2_tag", { :target => '#ec2_tags tbody', object: OpenStruct.new(name: nil, value: nil), locals: { editable: f.object.new_record? } }) %>
